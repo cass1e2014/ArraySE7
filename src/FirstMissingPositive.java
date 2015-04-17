@@ -28,16 +28,18 @@ public class FirstMissingPositive {
 	}
 	
 	public int firstMissingPositive(int[] A){
+		if(A == null){
+			return 0;
+		}
 		
 		for(int i = 0; i < A.length; i++){
 			if(A[i] <= A.length && A[i] > 0 && A[A[i]-1] != A[i]){
-				System.out.println("i = " + i + " , A[A[i]-1] = " + A[A[i]-1]);
+//				System.out.println("i = " + i + " , A[A[i]-1] = " + A[A[i]-1]);
 				int temp = A[A[i] - 1];
 				A[A[i] - 1] = A[i];
 				A[i] = temp;
-				i--;
-				System.out.println("After i--, i = " + i);
-				System.out.println("After exchange, Array A is: " + Arrays.toString(A));
+//				System.out.println("After i--, i = " + i);
+//				System.out.println("After exchange, Array A is: " + Arrays.toString(A));
   			}
 		}
 		
