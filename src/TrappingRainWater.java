@@ -17,7 +17,7 @@
  * right[]: 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 1, 0
 
  */
-public class TrappingRainWater {
+public class TrappingRainWater { 
 
 	public static int trap(int[] A){
 		if(A == null || A.length == 0){
