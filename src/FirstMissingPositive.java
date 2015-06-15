@@ -27,30 +27,29 @@ public class FirstMissingPositive {
 
 	}
 	
-	public int firstMissingPositive(int[] A){
-		if(A == null){
-			return 0;
-		}
-		
-		for(int i = 0; i < A.length; i++){
-			if(A[i] <= A.length && A[i] > 0 && A[A[i]-1] != A[i]){
-//				System.out.println("i = " + i + " , A[A[i]-1] = " + A[A[i]-1]);
-				int temp = A[A[i] - 1];
-				A[A[i] - 1] = A[i];
-				A[i] = temp;
-//				System.out.println("After i--, i = " + i);
-//				System.out.println("After exchange, Array A is: " + Arrays.toString(A));
-  			}
-		}
-		
-	    for (int i = 0; i < A.length; i++) {
-            if (A[i] != i + 1) {
-                return i + 1;  
+    public int firstMissingPositive(int[] nums) {
+        if(nums == null || nums.length == 0){
+            return 1;
+        }
+        
+        //排序，把数字放在应该在的位置上
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] > 0 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]){
+                int temp = nums[nums[i] - 1];
+                nums[nums[i] - 1] = nums[i];
+                nums[i] = temp;
+                i--;
             }
         }
-	    
-        return A.length + 1;		
-	}
+        
+        //再过一遍for loop找到那个数字和位置不一样return
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] != i + 1){
+                return i + 1;
+            }
+        }
+        return nums.length + 1;
+    }
 
 	
 }

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * You may assume that the intervals were initially sorted according to their start times.
@@ -12,28 +12,30 @@ import java.util.Arrays;
  */
 public class InsertInterval {
 
-	public static ArrayList<Interval> insert(ArrayList<Interval> intervals, Interval newInterval) {
-		//判断空集的情况
-		if(intervals == null || newInterval == null){
-			return intervals;
-		}
-		
-		ArrayList<Interval> result = new ArrayList<Interval>(); 
-		
-		int insertPosition = 0;//insertPosition是用来确定newInterval放的位置
-		for(Interval interval : intervals){
-			if(interval.end < newInterval.start){
-				result.add(interval);
-				insertPosition ++;
-			}else if(interval.start > newInterval.end){
-				result.add(interval);
-			}else{
-				newInterval.start = Math.min(interval.start, newInterval.start);
-				newInterval.end = Math.max(interval.end, newInterval.end);
-			}
-		}
-		result.add(insertPosition, newInterval);
-		return result;
+	public static List<Interval> insert(ArrayList<Interval> intervals, Interval newInterval) {
+		List<Interval> result = new ArrayList<Interval>();
+        if(intervals == null || intervals.size() == 0){
+            result.add(newInterval);
+            return result;
+        }
+        if(newInterval == null){
+            return intervals;
+        }
+        
+        int insertPosition = 0;
+        for(Interval interval : intervals){
+            if(interval.end < newInterval.start){
+                result.add(interval);
+                insertPosition ++;
+            }else if(interval.start > newInterval.end){
+                result.add(interval);
+            }else{
+                newInterval.start = Math.min(interval.start, newInterval.start);
+                newInterval.end = Math.max(interval.end, newInterval.end);
+            }
+        }
+        result.add(insertPosition, newInterval);
+        return result;
 	}
 	
 	
@@ -44,7 +46,7 @@ public class InsertInterval {
 		ArrayList<Interval> intervals = new ArrayList<Interval>();
 		intervals.add(interval1);
 		intervals.add(interval2);
-		ArrayList<Interval> result = insert(intervals, newInterval);
+		List<Interval> result = insert(intervals, newInterval);
 		for(Interval item : result){
 			System.out.println(item);
 		}
