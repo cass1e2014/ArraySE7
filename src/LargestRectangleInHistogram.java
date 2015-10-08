@@ -32,20 +32,16 @@ public class LargestRectangleInHistogram {
 
 		Stack<Integer> stack = new Stack<Integer>(); // 栈内保存都是index不是高度，stack里面只存放单调递增的索引
 		int max = 0;
-		for (int i = 0; i <= height.length; i++) {
+		for (int i = 0; i <= height.length; i++) { //注意！！！！这里是【小于等于】！！！！
 			int currentHeight = (i == height.length) ? -1 : height[i];
 			System.out.println("when i = " + i + ", curt = " + currentHeight);
 			// 注意到只要是连续递增的序列，我们都要keep pushing，直到我们遇到了i=4，h[i]=2小于了栈顶的元素。
 			while (!stack.isEmpty() && currentHeight <= height[stack.peek()]) {
 				int h = height[stack.pop()];
-//				System.out.println("h = " + h);
 				int w = stack.isEmpty() ? i : i - stack.peek() - 1;
-//				System.out.println("w = " + w);
 				max = Math.max(max, h * w);
-//				System.out.println("max = " + max);
 			}
 			stack.push(i);
-//			System.out.println("stack.push(i): " + i);
 		}
 		return max;
 	}
