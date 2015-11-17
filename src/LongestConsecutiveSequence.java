@@ -9,6 +9,7 @@ import java.util.HashSet;
  *
  * 用Hashset, 依照 set.contains(i - 1) 跟 set.contains(i + 1) 增加長度
  *
+ * Time ~O(N), Space ~O(N)
  */
 public class LongestConsecutiveSequence {
 	

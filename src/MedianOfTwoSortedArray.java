@@ -1,100 +1,78 @@
+import java.util.Arrays;
+
 /**
- * Median of Two Sorted Array (4/27)
- * There are two sorted arrays A and B of size m and n respectively. Find the
- * median of the two sorted arrays. The overall run time complexity should be
- * O(log (m+n)).
- * 
- * 同時也是另一題: "找到兩個 sorted array 中的第 k 個數"
+ * There are two sorted arrays nums1 and nums2 of size m and n respectively.
+ * Find the median of the two sorted arrays. The overall run time complexity
+ * should be O(log (m+n)).
  * 
  */
 public class MedianOfTwoSortedArray {
 
-	public static double findMedianSortedArrays(int[] A, int[] B) {
-		int len = A.length + B.length;
-		// 求median的话，如果A,B之和是偶数，则取中间两个数之和/2， 如果A,B之和是奇数， 则取中间的数即为median
-		if (len % 2 == 0) {
-			return (findKth(A, 0, B, 0, len / 2) + findKth(A, 0, B, 0,
-					len / 2 + 1)) / 2.0;
+	/*
+	 * An initial thought was firstly merge the two arrays, 
+	 * then median is the number on A.length + B.length - 1 / 2. 
+	 * However, merging will take O(m + n) time, so it is binary search
+	 * Definition of the median of a sorted array-- The return number is double.
+	 * So if the array length is even, e.g. 1, 2, 3, 4. The median is the
+	 * average of 2 and 3, i.e., 2 + 3 / 2 = 2.5
+	 * ---------------------------------------------------------
+	 * sec1:a0,a1,a2,.....,am/2, sec2:am/2+1,.....am-2,am-1
+	 * sec3:b0,b1,b2,.....,bn/2, sec4:bn/2+1,.....bn-2,bn-1
+	 * 丢弃哪部分取决于：(m/2+n/2) ? k      A[m/2] ? B[n/2]
+	 * 
+	 * If (m/2+n/2+1) > k && am/2 > bn/2 , drop Section 2
+	 * If (m/2+n/2+1) > k && am/2 < bn/2 , drop Section 4
+	 * If (m/2+n/2+1) < k && am/2 > bn/2 ,  drop Section 3
+	 * If (m/2+n/2+1) < k && am/2 < bn/2 ,  drop Section 1
+	 * 丢弃最大中位数的右区间，或者丢弃最小中位数的左区间
+	 */
+	
+	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+		if (nums1 == null || nums2 == null) {
+			return 0.0;
+		}
+
+		int n1 = nums1.length;
+		int n2 = nums2.length;
+		// 奇数
+		if ((n1 + n2) % 2 == 1) {
+			return findMedianHelper(nums1, nums2, (n1 + n2) / 2 + 1);
 		} else {
-			return findKth(A, 0, B, 0, len / 2 + 1);
+			return (findMedianHelper(nums1, nums2, (n1 + n2) / 2) + findMedianHelper(
+					nums1, nums2, (n1 + n2) / 2 + 1)) / 2;
 		}
 	}
 
-	public static int findKth(int[] A, int pointerA, int[] B, int pointerB,
-			int k) {
-		// 如果A指针移动到超出A[]的长度
-		System.out.println("k is -- " + k + " , pointerA is -- " + pointerA + " , pointerB is -- " + pointerB);
-		if (pointerA >= A.length) {
-			System.out.println("Enter pointerA >= A.length, A.length is -- " + A.length);
-			return B[pointerB + k - 1]; //-1是减去pointerB本身，array中index比实际减1
+	private double findMedianHelper(int[] nums1, int[] nums2, int k) {
+		if (nums1 == null || nums1.length == 0) {
+			return nums2[k - 1];
 		}
 
-		// 如果B指针移动到超出B[]的长度
-		if (pointerB >= B.length) {
-			System.out.println("Enter pointerB >= B.length, B.length is -- " + B.length);
-			return A[pointerA + k - 1];
+		if (nums2 == null || nums2.length == 0) {
+			return nums1[k - 1];
 		}
 
-		// 当recursion做到k只有1的时候，取最小值
 		if (k == 1) {
-			return Math.min(A[pointerA], B[pointerB]);
+			return Math.min(nums1[0], nums2[0]);
 		}
+		int n1 = nums1.length;
+		int n2 = nums2.length;
 
-		int aKey = pointerA + k / 2 - 1 < A.length ? A[pointerA + k / 2 - 1]
-				: Integer.MAX_VALUE;
-		System.out.println("aKey is -- " + aKey);
-		int bKey = pointerB + k / 2 - 1 < B.length ? B[pointerB + k / 2 - 1]
-				: Integer.MAX_VALUE;
-		System.out.println("bKey is -- " + bKey);
-
-		/**
-		 * 之前的pointerA停在了pointerA + k/2 - 1的位置上，所以下一个recursion的起始位置是pointerA +
-		 * k/2 因为aKey < bKey, 所以aKey之前的数不需要再考虑。A[]的起点为pointerA + k/2,
-		 * B[]仍在pointerB处 k/2为不用考虑的数目（因为k - k/2)
-		 */
-		if (aKey < bKey) {
-			return findKth(A, pointerA + k / 2, B, pointerB, k - k / 2);
+		if (nums1[n1 / 2] > nums2[n2 / 2]) {
+			// 当前中位数取大了,drop nums1[]的后半段
+			if ((n1 / 2 + n2 / 2 + 1) >= k) {
+				return findMedianHelper(Arrays.copyOfRange(nums1, 0, n1 / 2),nums2, k);
+			} else {
+				return findMedianHelper(nums1,Arrays.copyOfRange(nums2, n2 / 2 + 1, n2), k - (n2 / 2 + 1));
+			}
 		} else {
-			return findKth(A, pointerA, B, pointerB + k / 2, k - k / 2);
-		}
-	}
-
-	public static void main(String[] args) {
-		int[] A = { 1, 7, 9};
-		int[] B = { 2, 4, 6};
-		double result = findMedianSortedArrays(A, B);
-	//	int res = linearSeachK(A, B, 5);
-	//	System.out.println(res);
-		System.out.println(result);
-	}
-
-	// linear method: O(m+n)
-	public static int linearSeachK(int[] A, int[] B, int k) {
-		int pa = 0;
-		int pb = 0;
-
-		if (A == null || A.length == 0) {
-			return B[k - 1];
-		}
-
-		if (B == null || B.length == 0) {
-			return A[k - 1];
-		}
-		for (int i = 0; i < k - 1; i++) {
-			if (pa < A.length && A[pa] < B[pb]) {
-				pa++;
-			} else if (pb < B.length && A[pa] >= B[pb]) {
-				pb++;
+			if ((n1 / 2 + n2 / 2 + 1) >= k) {
+				return findMedianHelper(nums1,Arrays.copyOfRange(nums2, 0, n2 / 2), k);
+			} else {
+				return findMedianHelper(Arrays.copyOfRange(nums1, n1 / 2 + 1, n1), nums2, k - (n1 / 2 + 1));
 			}
-
-			if (pa == A.length) {
-				return B[k - A.length - 1];
-			} else if (pb == B.length) {
-				return A[k - B.length - 1];
-			}
-
 		}
-		return Math.min(A[pa], B[pb]);
 
 	}
+
 }
