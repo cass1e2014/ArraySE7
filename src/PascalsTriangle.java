@@ -24,13 +24,14 @@ import java.util.List;
 public class PascalsTriangle {
 	public List<List<Integer>> generate(int numRows) {
 		List<List<Integer>> listSet = new ArrayList<List<Integer>>();
-		for(int i= 0; i < numRows; i++){
+		for (int i = 0; i < numRows; i++) {
 			List<Integer> list = new ArrayList<Integer>();
-			for(int j = 0; j < i; j++){
-				if(j == 0 || i == j){
+			for (int j = 0; j <= i; j++) {
+				if (j == 0 || i == j) {
 					list.add(1);
-				}else{
-					list.add(listSet.get(i - 1).get(j - 1) + listSet.get(i - 1).get(j));
+				} else {
+					list.add(listSet.get(i - 1).get(j - 1)
+							+ listSet.get(i - 1).get(j));
 				}
 			}
 			listSet.add(list);

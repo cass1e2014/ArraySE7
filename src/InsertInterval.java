@@ -22,7 +22,7 @@ public class InsertInterval {
             return intervals;
         }
         
-        int insertPosition = 0;
+        int insertPosition = 0;//insertPosition是要记录newInterval要插入在哪里
         for(Interval interval : intervals){
             if(interval.end < newInterval.start){
                 result.add(interval);
