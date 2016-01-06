@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class PascalsTriangleII {
 	public List<Integer> getRow(int rowIndex) {
-		List<Integer> list = new ArrayList<Integer>();
-		List<Integer> prev = new ArrayList<Integer>();
+		List<Integer> list = null;
+		List<Integer> prev = null;
 	
 		//input:0, output:[], expected:[1], so i needs to be <= rowIndex
 		for(int i = 0; i <= rowIndex; i++){

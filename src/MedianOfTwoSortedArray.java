@@ -7,26 +7,14 @@ import java.util.Arrays;
  * 
  */
 public class MedianOfTwoSortedArray {
-
-	/*
-	 * An initial thought was firstly merge the two arrays, 
-	 * then median is the number on A.length + B.length - 1 / 2. 
-	 * However, merging will take O(m + n) time, so it is binary search
-	 * Definition of the median of a sorted array-- The return number is double.
-	 * So if the array length is even, e.g. 1, 2, 3, 4. The median is the
-	 * average of 2 and 3, i.e., 2 + 3 / 2 = 2.5
-	 * ---------------------------------------------------------
-	 * sec1:a0,a1,a2,.....,am/2, sec2:am/2+1,.....am-2,am-1
-	 * sec3:b0,b1,b2,.....,bn/2, sec4:bn/2+1,.....bn-2,bn-1
-	 * 丢弃哪部分取决于：(m/2+n/2) ? k      A[m/2] ? B[n/2]
+	/**
+	 * 有序数组中位数
+	 * 时间O(log(m+n)), 空间O(1)
+	 * 分治法， divide and conquer
+	 * 当n为奇数时，搜寻第(n/2+1)个元素，当n为偶数时，搜寻第(n/2+1)和第(n/2)个元素，然后取他们的均值。
+	 * 我们可以把这题抽象为“搜索两个有序序列的第k个元素”。如果我们解决了这个k元素问题，那中位数不过是k的取值不同罢了。
 	 * 
-	 * If (m/2+n/2+1) > k && am/2 > bn/2 , drop Section 2
-	 * If (m/2+n/2+1) > k && am/2 < bn/2 , drop Section 4
-	 * If (m/2+n/2+1) < k && am/2 > bn/2 ,  drop Section 3
-	 * If (m/2+n/2+1) < k && am/2 < bn/2 ,  drop Section 1
-	 * 丢弃最大中位数的右区间，或者丢弃最小中位数的左区间
 	 */
-	
 	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 		if (nums1 == null || nums2 == null) {
 			return 0.0;

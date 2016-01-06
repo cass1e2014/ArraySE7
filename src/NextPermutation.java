@@ -57,7 +57,7 @@ public class NextPermutation {
 		//反转后面所有元素，让他从小到大sorted（因为之前是从大到小sorted的）  
 		//for(int i = edge + 1, j = num.length - 1; i <j;  i ++, j--)
 		//中间只是控制次数，2种写法都可以。i < j， 会停在i = j的时候，i = j的时候实际也不用做swap
-		for(int i = edge + 1, j = num.length - 1; i <= edge + (num.length - edge - 1) / 2;  i ++, j--){
+		for(int i = edge + 1, j = num.length - 1; i <= edge + (num.length - 1 - edge) / 2;  i ++, j--){
 			nextPermutationSwap(num, i, j);
 		}
 	}

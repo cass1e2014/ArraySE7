@@ -21,35 +21,36 @@ public class FirstMissingPositive {
 
 	public static void main(String[] args) {
 		FirstMissingPositive f = new FirstMissingPositive();
-		int[] A = {3, 4, -1, 1};
+		int[] A = {1, 0, 2};
 		
 		System.out.println(f.firstMissingPositive(A));
 
 	}
 	
     public int firstMissingPositive(int[] nums) {
-        if(nums == null || nums.length == 0){
+    	if(nums == null || nums.length == 0){
             return 1;
         }
         
-        //排序，把数字放在应该在的位置上
         for(int i = 0; i < nums.length; i++){
-            if(nums[i] > 0 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]){
-                int temp = nums[nums[i] - 1];
-                nums[nums[i] - 1] = nums[i];
-                nums[i] = temp;
-                i--;//交换位置后还要再过一遍*
+            int num = nums[i];
+            if(num > 0 && (i+1) != num && num <= nums.length && nums[num - 1] != num){
+                swap(nums, i, num - 1);
+                i--;
             }
         }
         
-        //再过一遍for loop找到那个数字和位置不一样return
         for(int i = 0; i < nums.length; i++){
-            if(nums[i] != i + 1){
+            if(nums[i] != (i + 1)){
                 return i + 1;
             }
         }
         return nums.length + 1;
     }
-
-	
+    
+    public void swap(int[] nums, int i, int j){
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
 }
